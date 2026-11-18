@@ -1,0 +1,46 @@
+[
+  {
+    "slug": "meeras-bakehouse",
+    "name": "Meera's Bakehouse",
+    "owner_name": "Meera",
+    "category": "home bakery",
+    "description": "Eggless cakes, cookies and breads baked to order from a home kitchen.",
+    "city": "Pune",
+    "service_areas": ["Kothrud", "Karve Nagar", "Warje", "411038", "411052"],
+    "languages": ["English", "Marathi", "Hindi"],
+    "products": [
+      {"id": "eggless-chocolate-cake", "name": "Eggless chocolate cake", "description": "Rich chocolate sponge with ganache.", "price_minor": 85000, "unit": "per kg", "tags": ["cake", "birthday cake", "chocolate", "eggless"]},
+      {"id": "nankhatai", "name": "Nankhatai", "name_local": "नानकटाई", "description": "Traditional shortbread cookies.", "price_minor": 32000, "unit": "per 500 g", "tags": ["cookies", "biscuits", "nankhatai", "diwali"]},
+      {"id": "whole-wheat-bread", "name": "Whole wheat bread", "description": "Soft sandwich loaf.", "price_minor": 9000, "unit": "per loaf", "tags": ["bread", "atta bread", "healthy"]}
+    ]
+  },
+  {
+    "slug": "sharma-tailoring",
+    "name": "Sharma Tailoring",
+    "owner_name": "Sunita Sharma",
+    "category": "tailoring",
+    "description": "Blouse stitching, alterations and kurta tailoring with home pickup.",
+    "city": "Pune",
+    "service_areas": ["Aundh", "Baner", "Pashan", "411007", "411045"],
+    "languages": ["Hindi", "English"],
+    "products": [
+      {"id": "blouse-stitching", "name": "Blouse stitching", "description": "Custom-fit saree blouse, lining included.", "price_minor": 60000, "unit": "each", "tags": ["blouse", "stitching", "tailor", "saree blouse"]},
+      {"id": "kurta-stitching", "name": "Kurta stitching", "description": "Kurta stitched from your fabric.", "price_minor": 55000, "unit": "each", "tags": ["kurta", "stitching", "tailor"]},
+      {"id": "alterations", "name": "Alterations", "description": "Hemming, fitting and repairs.", "price_minor": 15000, "unit": "per item", "tags": ["alteration", "repair", "fitting", "tailor"]}
+    ]
+  },
+  {
+    "slug": "nashik-masala-co",
+    "name": "Nashik Masala Co.",
+    "owner_name": "Rahul Patil",
+    "category": "spices",
+    "description": "Stone-ground spice blends from a family recipe.",
+    "city": "Nashik",
+    "service_areas": ["Nashik", "Mumbai", "Pune"],
+    "languages": ["Marathi", "English"],
+    "products": [
+      {"id": "goda-masala", "name": "Goda masala", "name_local": "गोडा मसाला", "description": "Maharashtrian sweet-spice blend.", "price_minor": 18000, "unit": "per 200 g", "tags": ["masala", "spice", "goda masala", "maharashtrian"]},
+      {"id": "kanda-lasun-masala", "name": "Kanda lasun masala", "name_local": "कांदा लसूण मसाला", "description": "Onion-garlic chilli blend.", "price_minor": 22000, "unit": "per 200 g", "tags": ["masala", "spice", "onion garlic", "chilli"]}
+    ]
+  }
+]

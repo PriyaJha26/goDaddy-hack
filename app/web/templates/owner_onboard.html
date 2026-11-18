@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Add a shop · {{ site_name }}{% endblock %}
+{% block content %}
+<section class="panel narrow">
+  <h1>Open a shop to AI assistants</h1>
+  <p class="lead">Upload a clear photo of a menu, price list or product board. Handwriting and Indian languages are fine.</p>
+  {% if not claude_enabled %}<p class="banner warn">Demo mode: no API key is configured, so sample data is used instead of reading the photo.</p>{% endif %}
+  <form method="post" action="/owner/onboard" enctype="multipart/form-data" class="form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <label>Photo <input type="file" name="photo" accept="image/jpeg,image/png,image/webp,image/gif" required></label>
+    <label>Anything we should know? <span class="muted">(optional)</span>
+      <textarea name="owner_notes" rows="3" maxlength="1000" placeholder="e.g. Prices are per kg. We deliver in Kothrud and Warje."></textarea>
+    </label>
+    <button class="button primary" type="submit">Read my menu</button>
+  </form>
+</section>
+{% endblock %}

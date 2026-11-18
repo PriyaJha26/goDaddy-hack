@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <p class="eyebrow">For home businesses, makers and local shops</p>
+  <h1>People are starting to shop by asking AI.<br>Most small shops are invisible to it.</h1>
+  <p class="lead">
+    Snap a photo of your menu or price list. We turn it into a catalogue AI assistants can search,
+    check delivery against, and send enquiries through, straight to your inbox. No website skills needed.
+  </p>
+  <div class="actions">
+    <a class="button primary" href="/try">See an AI assistant find a shop</a>
+    <a class="button" href="/owner/onboard">Open my shop to AI</a>
+  </div>
+</section>
+
+<section class="steps" aria-labelledby="how">
+  <h2 id="how">How it works</h2>
+  <ol class="cards">
+    <li><h3>1. Photo in</h3><p>A handwritten menu in Marathi or a price board in Hindi is fine. Claude reads it and translates.</p></li>
+    <li><h3>2. Owner checks it</h3><p>Nothing goes live until you've reviewed every product and price.</p></li>
+    <li><h3>3. Open for agents</h3><p>Your shop appears in our MCP server and as structured data, so AI assistants can find and contact you.</p></li>
+  </ol>
+</section>
+
+<section id="for-assistants" class="panel" aria-labelledby="assistants">
+  <h2 id="assistants">For AI assistants and developers</h2>
+  <p>Connect any MCP-capable assistant to this directory:</p>
+  <p><code class="copy">{{ base_url }}/mcp</code></p>
+  <p class="muted">
+    Tools: <code>search_products</code>, <code>get_business</code>, <code>check_delivery</code>, <code>send_enquiry</code>.
+    In Claude, add it as a custom connector under Settings → Connectors.
+    Crawlers can also read <a href="/llms.txt">/llms.txt</a> and the schema.org data on each shop page.
+  </p>
+</section>
+
+<section aria-labelledby="directory">
+  <h2 id="directory">Shops open to AI assistants</h2>
+  {% if businesses %}
+  <ul class="directory">
+    {% for b in businesses %}
+    <li>
+      <a href="/shop/{{ b.slug }}"><strong>{{ b.name }}</strong></a>
+      <span class="muted">{{ b.category }} · {{ b.city }} · {{ b.products|length }} products</span>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="muted">No shops yet. <a href="/owner/onboard">Add the first one.</a></p>
+  {% endif %}
+</section>
+
+<section id="contact" class="panel" aria-labelledby="contact-title">
+  <h2 id="contact-title">Contact us</h2>
+  <form method="post" action="/contact" class="form">
+    <label>Your name <input name="name" required maxlength="120" autocomplete="name"></label>
+    <label>Email <input name="email" type="email" required maxlength="200" autocomplete="email"></label>
+    <label>Message <textarea name="message" required maxlength="4000" rows="4"></textarea></label>
+    <label class="hp" aria-hidden="true">Leave empty <input name="website" tabindex="-1" autocomplete="off"></label>
+    <button class="button primary" type="submit">Send message</button>
+  </form>
+</section>
+{% endblock %}

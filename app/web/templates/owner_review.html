@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Review catalogue · {{ site_name }}{% endblock %}
+{% block content %}
+<section>
+  <h1>Check your catalogue</h1>
+  <p class="lead">Claude read your photo{% if draft.languages_seen %} ({{ draft.languages_seen|join(", ") }}){% endif %}. Fix anything that's wrong; nothing is published until you confirm.</p>
+  {% if draft.notes %}<p class="banner warn"><strong>Please check:</strong> {{ draft.notes }}</p>{% endif %}
+
+  <form method="post" action="/owner/onboard/publish" class="form wide">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <fieldset>
+      <legend>Business</legend>
+      <div class="grid">
+        <label>Business name <input name="business_name" required maxlength="120" value="{{ draft.business_name or '' }}"></label>
+        <label>Owner name <input name="owner_name" maxlength="120"></label>
+        <label>Category <input name="category" maxlength="60" value="{{ draft.category }}"></label>
+        <label>City <input name="city" required maxlength="80" placeholder="e.g. Pune"></label>
+        <label>Delivers to <input name="service_areas" maxlength="400" placeholder="Areas or PIN codes, comma separated"></label>
+        <label>Languages <input name="languages" maxlength="200" value="{{ draft.languages_seen|join(', ') }}"></label>
+      </div>
+      <label>Description <textarea name="description" rows="2" maxlength="1000">{{ draft.description }}</textarea></label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Products <span class="muted">(clear a name to remove a row)</span></legend>
+      <table class="catalogue editable">
+        <thead><tr><th scope="col">Name (English)</th><th scope="col">Name as written</th><th scope="col">Price ₹</th><th scope="col">Unit</th><th scope="col">Search tags</th><th scope="col">Description</th></tr></thead>
+        <tbody>
+        {% for p in products %}
+          <tr>
+            <td><input name="product_name" value="{{ p.name }}" maxlength="120" aria-label="Name"></td>
+            <td><input name="product_local" value="{{ p.name_local or '' }}" maxlength="120" aria-label="Local name"></td>
+            <td><input name="product_price" value="{{ '%.2f'|format(p.price_minor / 100) }}" inputmode="decimal" aria-label="Price"></td>
+            <td><input name="product_unit" value="{{ p.unit }}" maxlength="40" aria-label="Unit"></td>
+            <td><input name="product_tags" value="{{ p.tags|join(', ') }}" maxlength="400" aria-label="Tags"></td>
+            <td><input name="product_description" value="{{ p.description }}" maxlength="500" aria-label="Description"></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </fieldset>
+    <button class="button primary" type="submit">Publish: open my shop to AI assistants</button>
+  </form>
+</section>
+{% endblock %}

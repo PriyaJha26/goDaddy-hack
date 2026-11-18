@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Enquiries · {{ site_name }}{% endblock %}
+{% block content %}
+<section class="row">
+  <h1>Enquiries</h1>
+  <div class="actions">
+    <a class="button primary" href="/owner/onboard">+ Add a shop from a photo</a>
+    <form method="post" action="/owner/logout"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="button" type="submit">Log out</button></form>
+  </div>
+</section>
+
+{% if not enquiries %}
+<p class="muted">No enquiries yet. Try asking the <a href="/try">demo assistant</a> to send one.</p>
+{% endif %}
+
+<ul class="enquiries">
+{% for e in enquiries %}
+  {% set b = businesses.get(e.business_slug) %}
+  <li class="enquiry {{ e.status.value }}">
+    <div class="row">
+      <h2>{{ e.customer_name }} → {{ b.name if b else e.business_slug }}</h2>
+      <span class="badge {{ 'agent' if e.source.value == 'ai_agent' else 'web' }}">
+        {{ ('via ' ~ (e.agent_name or 'AI assistant')) if e.source.value == 'ai_agent' else 'via website' }}
+      </span>
+    </div>
+    <p class="muted">{{ e.created_at.strftime('%d %b %Y, %H:%M') }} UTC · {{ e.customer_email }}
+      {% if e.delivery_location %}· deliver to {{ e.delivery_location }}{% endif %}
+      {% if e.needed_by %}· needed by {{ e.needed_by }}{% endif %}</p>
+    {% if e.items %}
+    <ul class="items">{% for i in e.items %}{% set p = b.product(i.product_id) if b else None %}<li>{{ i.quantity }} × {{ p.name if p else i.product_id }}</li>{% endfor %}</ul>
+    {% endif %}
+    <blockquote>{{ e.message }}</blockquote>
+
+    {% if e.status.value == 'replied' %}
+      <p class="muted">✓ Replied {{ e.replied_at.strftime('%d %b, %H:%M') if e.replied_at }}:</p>
+      <pre class="reply">{{ e.reply_text }}</pre>
+    {% else %}
+      {% if e.id in drafts %}
+      <form method="post" action="/owner/enquiries/{{ e.id }}/send" class="form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <label>Reply (edit before sending) <textarea name="reply_text" rows="7" required>{{ drafts[e.id] }}</textarea></label>
+        <button class="button primary" type="submit">Approve and send email</button>
+      </form>
+      {% else %}
+      <form method="post" action="/owner/enquiries/{{ e.id }}/draft">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <button class="button" type="submit">{{ 'Draft reply with Claude' if claude_enabled else 'Draft reply' }}</button>
+      </form>
+      {% endif %}
+    {% endif %}
+  </li>
+{% endfor %}
+</ul>
+{% endblock %}

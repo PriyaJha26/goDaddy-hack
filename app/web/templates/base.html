@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ site_name }}{% endblock %}</title>
+  <meta name="description" content="{% block description %}Make small businesses discoverable and bookable by AI assistants.{% endblock %}">
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt">
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="/"><span class="brand-dot" aria-hidden="true"></span>{{ site_name }}</a>
+    <nav aria-label="Main">
+      <a href="/try">Try it as an AI assistant</a>
+      <a href="/#for-assistants">Connect your assistant</a>
+      <a href="/owner">For shop owners</a>
+    </nav>
+  </header>
+  <main id="main">
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="site-footer">
+    <p>{{ site_name }}: small businesses, open to AI assistants. <a href="/llms.txt">llms.txt</a> · <a href="/#contact">Contact</a></p>
+  </footer>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Try it as an AI assistant · {{ site_name }}{% endblock %}
+{% block content %}
+<section>
+  <p class="eyebrow">Live demo</p>
+  <h1>Ask an AI assistant to find a small shop</h1>
+  <p class="lead">This assistant uses only the public MCP tools at <code>{{ base_url }}/mcp</code>, the same ones any connected assistant gets. Watch each tool call it makes.</p>
+
+  {% if not agent_available %}
+  <p class="banner warn">The live assistant needs <code>ANTHROPIC_API_KEY</code>. You can still connect your own assistant to <code>{{ base_url }}/mcp</code>.</p>
+  {% else %}
+  <form id="try-form" class="form wide">
+    <label for="try-message">What do you need?</label>
+    <textarea id="try-message" name="message" rows="3" maxlength="600" required>I need 2 kg of mango pickle delivered in Kothrud, Pune by Friday. Who sells it and how much?</textarea>
+    <div class="examples" aria-label="Example requests">
+      <button type="button" class="chip" data-example="I need 2 kg of mango pickle delivered in Kothrud, Pune by Friday. Who sells it and how much?">Mango pickle</button>
+      <button type="button" class="chip" data-example="Find someone in Baner who can stitch a saree blouse, and tell me the price.">Blouse stitching</button>
+      <button type="button" class="chip" data-example="Send an enquiry for 2 kg mango pickle to be delivered to Kothrud by Friday. My name is Priya and my email is priya@example.com.">Send an enquiry</button>
+    </div>
+    <button class="button primary" type="submit" id="try-submit">Ask the assistant</button>
+  </form>
+
+  <div id="try-output" class="transcript" aria-live="polite" hidden>
+    <h2>What the assistant did</h2>
+    <ol id="try-steps" class="steps-list"></ol>
+    <h2>Answer</h2>
+    <div id="try-answer" class="answer"></div>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}
+{% block scripts %}<script src="/static/try.js" defer></script>{% endblock %}

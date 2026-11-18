@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}{{ business.name }} · {{ site_name }}{% endblock %}
+{% block description %}{{ business.description }}{% endblock %}
+{% block head %}
+  <script type="application/ld+json">{{ json_ld }}</script>
+{% endblock %}
+{% block content %}
+{% if published %}
+<div class="banner success" role="status">
+  <strong>{{ business.name }} is now open to AI assistants.</strong>
+  Any assistant connected to <code>{{ base_url }}/mcp</code> can find it.
+  <a href="/try">Try it now →</a>
+</div>
+{% endif %}
+
+<section class="shop-header">
+  <p class="eyebrow">{{ business.category }} · {{ business.city }}</p>
+  <h1>{{ business.name }}</h1>
+  <p class="lead">{{ business.description }}</p>
+  <p class="muted">Delivers to: {{ ([business.city] + business.service_areas)|join(", ") }} · Speaks: {{ business.languages|join(", ") }}</p>
+</section>
+
+<section aria-labelledby="catalogue">
+  <h2 id="catalogue">Catalogue</h2>
+  <table class="catalogue">
+    <thead><tr><th scope="col">Product</th><th scope="col">Price</th><th scope="col">Details</th></tr></thead>
+    <tbody>
+    {% for p in business.products %}
+      <tr{% if not p.available %} class="unavailable"{% endif %}>
+        <td><strong>{{ p.name }}</strong>{% if p.name_local %}<br><span class="local">{{ p.name_local }}</span>{% endif %}</td>
+        <td>{{ p.price_display }} <span class="muted">{{ p.unit }}</span></td>
+        <td>{{ p.description }}{% if not p.available %} <em>(out of stock)</em>{% endif %}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<section class="panel" aria-labelledby="enquire">
+  <h2 id="enquire">Send an enquiry</h2>
+  <form method="post" action="/shop/{{ business.slug }}/enquire" class="form">
+    <label>Product
+      <select name="product_id">
+        <option value="">General enquiry</option>
+        {% for p in business.products %}<option value="{{ p.id }}">{{ p.name }} ({{ p.price_display }} {{ p.unit }})</option>{% endfor %}
+      </select>
+    </label>
+    <label>Quantity <input name="quantity" maxlength="40" placeholder="e.g. 2 kg"></label>
+    <label>Deliver to <input name="delivery_location" maxlength="200" placeholder="Area or PIN code"></label>
+    <label>Your name <input name="customer_name" required maxlength="120" autocomplete="name"></label>
+    <label>Email <input name="customer_email" type="email" required maxlength="200" autocomplete="email"></label>
+    <label>Message <textarea name="message" required maxlength="2000" rows="3"></textarea></label>
+    <label class="hp" aria-hidden="true">Leave empty <input name="website" tabindex="-1" autocomplete="off"></label>
+    <button class="button primary" type="submit">Send enquiry</button>
+  </form>
+</section>
+{% endblock %}
